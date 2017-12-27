@@ -1,5 +1,5 @@
 /****************************************************************************
-** TEST
+**
 ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
@@ -88,21 +88,25 @@ private:
 PhantomIntegration::PhantomIntegration()
   : m_nativeInterface(new PhantomNativeInterface)
 {
-    PhantomScreen *screen = new PhantomScreen();
+    PhantomScreen *mPrimaryScreen = new PhantomScreen();
 
     // Simulate typical desktop screen
-    int width = 1024;
-    int height = 768;
+    int widths [5] = { 1024, 1920, 1366, 1280, 1600 };
+    int heights [5] = { 768, 1080, 768, 1024, 900};
+    int ranres = rand() % 5 + 1;
+    int width = widths[ranres];
+    int height = heights[ranres];
+
     int dpi = 72;
     qreal physicalWidth = width * 25.4 / dpi;
     qreal physicalHeight = height * 25.4 / dpi;
-    screen->setGeometry(QRect(0, 0, width, height));
-    screen->setPhysicalSize(QSizeF(physicalWidth, physicalHeight));
+    mPrimaryScreen->mGeometry = QRect(0, 0, width, height);
+    mPrimaryScreen->mPhysicalSize = QSizeF(physicalWidth, physicalHeight);
 
-    screen->setDepth(32);
-    screen->setFormat(QImage::Format_ARGB32_Premultiplied);
+    mPrimaryScreen->mDepth = 32;
+    mPrimaryScreen->mFormat = QImage::Format_ARGB32_Premultiplied;
 
-    screenAdded(screen);
+    screenAdded(mPrimaryScreen);
 }
 
 PhantomIntegration::~PhantomIntegration()
